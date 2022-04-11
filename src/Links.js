@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Circles } from "react-loader-spinner";
+import { Triangle } from "react-loader-spinner";
+import axios from "axios";
 const Links = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          console.log(result);
-          setData(result);
-        },
-
-        (error) => {
-          console.error(error);
-        }
-      );
+    const getData = async () => {
+      await axios
+        .get("https://jsonplaceholder.typicode.com/users")
+        .then((res) => {
+          setData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getData();
   }, []);
   return (
     <ul>
@@ -27,7 +27,7 @@ const Links = () => {
           </li>
         ))
       ) : (
-        <Circles color="#00BFFF" height={80} width={80} />
+        <Triangle color="#555" height={80} width={80} />
       )}
     </ul>
   );
